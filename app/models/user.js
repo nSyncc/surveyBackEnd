@@ -10,7 +10,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  token: String
+  token: String, 
+  isAdmin: {
+    type:Boolean,
+    required: true
+}
 }, {
   timestamps: true,
   toObject: {
@@ -21,5 +25,6 @@ const userSchema = new mongoose.Schema({
     }
   }
 })
+
 
 module.exports = mongoose.model('User', userSchema)
