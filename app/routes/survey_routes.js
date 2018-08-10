@@ -31,16 +31,23 @@ const router = express.Router()
 // INDEX
 // GET /survey
 router.get('/surveys', requireToken, (req, res) => {
-   Survey.find()
+  Survey.find({ owner: req.user.id })
+  
+  .then(surveys => {
+    return surveys.map(survey => survey.toObject())
+  })
+  .then(surveys => res.status(200).json({ surveys: surveys }))
+  .catch(err => handle(err, res))
+})
+
+router.get('/surveys/:type', (req, res) => {
+
+  Survey.find()
+  
     .then(surveys => {
-      // `examples` will be an array of Mongoose documents
-      // we want to convert each one to a POJO, so we use `.map` to
-      // apply `.toObject` to each one
       return surveys.map(survey => survey.toObject())
     })
-    // respond with status 200 and JSON of the examples
     .then(surveys => res.status(200).json({ surveys: surveys }))
-    // if an error occurs, pass it to the handler
     .catch(err => handle(err, res))
 })
 
@@ -66,7 +73,7 @@ router.post('/surveys', requireToken, (req, res) => {
     // respond to succesful `create` with status 201 and JSON of new "example"
     .then(survey => {
       
-      req.body.survey.link = 'localhost:4741/survey/' + survey._id
+      req.body.survey.link = 'localhost:4741/survey.html?sid=' + survey._id
       survey.update(req.body.survey)
         .then(s => { })
 

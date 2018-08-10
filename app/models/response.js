@@ -1,23 +1,27 @@
 const mongoose = require('mongoose')
 
-const questionSchema = new mongoose.Schema({
-  questionOne: {
+const responseSchema = new mongoose.Schema({
+  name: {
     type: String,
     required: true
   },
-  questionTwo: {
+  responseOne: {
     type: String,
     required: true
   },
-  questionThree: {
+  responseTwo: {
     type: String,
     required: true
   },
-  questionFour: {
+  responseThree: {
     type: String,
     required: true
   },
-  questionFive: {
+  responseFour: {
+    type: String,
+    required: true
+  },
+  responseFive: {
     type: String,
     required: true
   },
@@ -30,4 +34,4 @@ const questionSchema = new mongoose.Schema({
   timestamps: true
 })
 
-module.exports = mongoose.model('Question', questionSchema)
+module.exports = mongoose.model('Response', responseSchema)

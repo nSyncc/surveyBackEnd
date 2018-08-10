@@ -4,7 +4,7 @@ const express = require('express')
 const passport = require('passport')
 
 // pull in Mongoose model for examples
-const Question = require('../models/question')
+const Response = require('../models/response')
 
 // we'll use this to intercept any errors that get thrown and send them
 // back to the client with the appropriate status code
@@ -29,57 +29,57 @@ const requireToken = passport.authenticate('bearer', { session: false })
 const router = express.Router()
 
 // INDEX
-// GET /question
-// router.get('/questions', requireToken, (req, res) => {
+// GET /response
+router.get('/responses', requireToken, (req, res) => {
 
-//    Question.find({ owner: req.survey.id })
-//     .then(questions => {
-//       // `examples` will be an array of Mongoose documents 
-//       // we want to convert each one to a POJO, so we use `.map` to
-//       // apply `.toObject` to each one
-//       return questions.map(question => question.toObject())
-//     })
-//     // respond with status 200 and JSON of the examples
-//     .then(questions => res.status(200).json({ questions: questions }))
-//     // if an error occurs, pass it to the handler
-//     .catch(err => handle(err, res))
-// })
-router.get('/questions/:sid', (req, res) => {
+   Response.find({ owner: req.survey.id })
+    .then(responses => {
+      // `examples` will be an array of Mongoose documents 
+      // we want to convert each one to a POJO, so we use `.map` to
+      // apply `.toObject` to each one
+      return responses.map(response => response.toObject())
+    })
+    // respond with status 200 and JSON of the examples
+    .then(responses => res.status(200).json({ responses: responses }))
+    // if an error occurs, pass it to the handler
+    .catch(err => handle(err, res))
+})
+router.get('/responses/:sid', requireToken, (req, res) => {
 
-  Question.find({ owner: req.params.sid })
-   .then(questions => {
+  Response.find({ owner: req.params.sid })
+   .then(responses => {
      // `examples` will be an array of Mongoose documents
      // we want to convert each one to a POJO, so we use `.map` to
      // apply `.toObject` to each one
-     return questions.map(question => question.toObject())
+     return responses.map(response => response.toObject())
    })
    // respond with status 200 and JSON of the examples
-   .then(questions => res.status(200).json({ questions: questions }))
+   .then(responses => res.status(200).json({ responses: responses }))
    // if an error occurs, pass it to the handler
    .catch(err => handle(err, res))
 })
 // SHOW
-// GET /questions/5a7db6c74d55bc51bdf39793
-router.get('/questions/:id', requireToken, (req, res) => {
+// GET /responses/5a7db6c74d55bc51bdf39793
+router.get('/responses/:id', requireToken, (req, res) => {
   // req.params.id will be set based on the `:id` in the route
-  Question.findById(req.params.id)
+  Response.findById(req.params.id)
     .then(handle404)
     // if `findById` is succesful, respond with 200 and "example" JSON
-    .then(question => res.status(200).json({ question: question.toObject() }))
+    .then(response => res.status(200).json({ response: response.toObject() }))
     // if an error occurs, pass it to the handler
     .catch(err => handle(err, res))
 })
 
 // CREATE
-// POST /questions
-router.post('/questions', requireToken, (req, res) => {
+// POST /responses
+router.post('/responses', (req, res) => {
   // set owner of new example to be current user
-  req.body.question.owner = req.body.question.survey_id
+  req.body.response.owner = req.body.response.survey_id
 
-  Question.create(req.body.question)
+  Response.create(req.body.response)
     // respond to succesful `create` with status 201 and JSON of new "example"
-    .then(question => {
-      res.status(201).json({ question: question.toObject() })
+    .then(response => {
+      res.status(201).json({ response: response.toObject() })
     })
     // if an error occurs, pass it off to our error handler
     // the error handler needs the error message and the `res` object so that it
@@ -88,30 +88,30 @@ router.post('/questions', requireToken, (req, res) => {
 })
 
 // UPDATE
-// PATCH /questions/5a7db6c74d55bc51bdf39793
-router.patch('/questions/:id', requireToken, (req, res) => {
+// PATCH /responses/5a7db6c74d55bc51bdf39793
+router.patch('/responses/:id', requireToken, (req, res) => {
   // if the client attempts to change the `owner` property by including a new
   // owner, prevent that by deleting that key/value pair
-  delete req.body.question.owner
+  delete req.body.response.owner
 
-  Question.findById(req.params.id)
+  Response.findById(req.params.id)
     .then(handle404)
-    .then(question => {
+    .then(response => {
       // pass the `req` object and the Mongoose record to `requireOwnership`
       // it will throw an error if the current user isn't the owner
-      requireOwnership(req, question)
+      requireOwnership(req, response)
 
       // the client will often send empty strings for parameters that it does
       // not want to update. We delete any key/value pair where the value is
       // an empty string before updating
-      Object.keys(req.body.question).forEach(key => {
-        if (req.body.question[key] === '') {
-          delete req.body.question[key]
+      Object.keys(req.body.response).forEach(key => {
+        if (req.body.response[key] === '') {
+          delete req.body.response[key]
         }
       })
 
       // pass the result of Mongoose's `.update` to the next `.then`
-      return question.update(req.body.question)
+      return response.update(req.body.response)
     })
     // if that succeeded, return 204 and no JSON
     .then(() => res.sendStatus(204))
@@ -120,15 +120,15 @@ router.patch('/questions/:id', requireToken, (req, res) => {
 })
 
 // DESTROY
-// DELETE /questions/5a7db6c74d55bc51bdf39793
-router.delete('/questions/:id', requireToken, (req, res) => {
-    Question.findById(req.params.id)
+// DELETE /responses/5a7db6c74d55bc51bdf39793
+router.delete('/responses/:id', requireToken, (req, res) => {
+   Response.findById(req.params.id)
     .then(handle404)
-    .then(question => {
+    .then(response => {
       // throw an error if current user doesn't own `example`
-      requireOwnership(req, question)
+      requireOwnership(req, response)
       // delete the example ONLY IF the above didn't throw
-      question.remove()
+      response.remove()
     })
     // send back 204 and no content if the deletion succeeded
     .then(() => res.sendStatus(204))
