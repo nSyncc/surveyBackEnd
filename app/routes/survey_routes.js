@@ -73,11 +73,11 @@ router.post('/surveys', requireToken, (req, res) => {
     // respond to succesful `create` with status 201 and JSON of new "example"
     .then(survey => {
       
-      req.body.survey.link = 'localhost:4741/survey.html?sid=' + survey._id
+      req.body.survey.link = '/survey.html?sid=' + survey._id
       survey.update(req.body.survey)
         .then(s => { })
 
-      survey.link = 'localhost:4741/survey/' + survey._id
+      //survey.link = 'localhost:4741/survey/' + survey._id
       res.status(201).json({ survey: survey.toObject() })
     })
     // if an error occurs, pass it off to our error handler
