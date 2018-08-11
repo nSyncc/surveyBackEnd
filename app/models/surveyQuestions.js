@@ -9,9 +9,5 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "survey",
     required: true
-  },
-  question: {
-    type: String,
-    required: true
   }
 })
