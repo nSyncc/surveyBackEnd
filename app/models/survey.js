@@ -1,17 +1,26 @@
+
 const mongoose = require('mongoose')
 
-const userSchema = new mongoose.Schema({
-  questionResponse:{
+const surveySchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  link: {
     type: String,
     required: true
   },
   status: {
-    type: String, 
+    type: String,
     required: true
   },
-  userID: {
+  owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true
   }
+}, {
+  timestamps: true
 })
+
+module.exports = mongoose.model('Survey', surveySchema)
