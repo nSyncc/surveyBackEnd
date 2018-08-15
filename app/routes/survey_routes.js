@@ -32,7 +32,7 @@ const router = express.Router()
 // GET /survey
 router.get('/surveys', requireToken, (req, res) => {
   Survey.find({ owner: req.user.id })
-  
+
   .then(surveys => {
     return surveys.map(survey => survey.toObject())
   })
@@ -43,7 +43,7 @@ router.get('/surveys', requireToken, (req, res) => {
 router.get('/surveys/:type', (req, res) => {
 
   Survey.find()
-  
+
     .then(surveys => {
       return surveys.map(survey => survey.toObject())
     })
@@ -72,13 +72,12 @@ router.post('/surveys', requireToken, (req, res) => {
   Survey.create(req.body.survey)
     // respond to succesful `create` with status 201 and JSON of new "example"
     .then(survey => {
-      
       req.body.survey.link = '/survey.html?sid=' + survey._id
       survey.update(req.body.survey)
-        .then(s => { })
+        .then(console.log('link updated!'))
 
       //survey.link = 'localhost:4741/survey/' + survey._id
-      res.status(201).json({ survey: survey.toObject() })
+      re s.status(201).json({ survey: survey.toObject() })
     })
     // if an error occurs, pass it off to our error handler
     // the error handler needs the error message and the `res` object so that it
