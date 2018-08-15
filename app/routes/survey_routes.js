@@ -74,7 +74,7 @@ router.post('/surveys', requireToken, (req, res) => {
     .then(survey => {
       req.body.survey.link = '/survey.html?sid=' + survey._id
       survey.update(req.body.survey)
-        .then(console.log('link updated'))
+        .then(console.log('link updated!'))
 
       //survey.link = 'localhost:4741/survey/' + survey._id
       re s.status(201).json({ survey: survey.toObject() })
