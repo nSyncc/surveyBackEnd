@@ -32,3 +32,9 @@
 ## ERD
 
 ![ERD](/../../../../../desktop/Survey-project-diagram.png)
+
+# Issues
+    Our only issues were team communication issues, but we eventually solved those by talking through all of our issues with our communication and code.
+    
+# Process
+    We spent the entire first day planning out how we wanted the project to look, and how we wanted it to work. We drew up ERD's and WireFrames to help with this process, along with some whiteboarding of the initial starter code. We then used Agile Methodologies by having standups at the beginning and end of each day.
