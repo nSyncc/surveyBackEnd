@@ -77,7 +77,7 @@ router.post('/surveys', requireToken, (req, res) => {
         .then(console.log('link updated!'))
 
       //survey.link = 'localhost:4741/survey/' + survey._id
-      re s.status(201).json({ survey: survey.toObject() })
+      res.status(201).json({ survey: survey.toObject() })
     })
     // if an error occurs, pass it off to our error handler
     // the error handler needs the error message and the `res` object so that it
