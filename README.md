@@ -11,10 +11,6 @@
 # What this does
   The backend; takes in the user information from the sign up then uses that same information for the sign in and other CRUD functions, it also is what allows surveys and survey responses to be stored and accessed.
 
-# ERD
-
-![ERD](./Survey-project-diagram.png)
-
 
 # Useful links
 
